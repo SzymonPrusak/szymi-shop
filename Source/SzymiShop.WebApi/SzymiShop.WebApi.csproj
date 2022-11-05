@@ -14,4 +14,8 @@
     <Folder Include="Controller\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SzymiShop.WebApi.Business\SzymiShop.WebApi.Business.csproj" />
+  </ItemGroup>
+
 </Project>
