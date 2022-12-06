@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SzymiShop.Website", "SzymiS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SzymiShop.WebApi.Business", "SzymiShop.WebApi.Business\SzymiShop.WebApi.Business.csproj", "{0CCE72C8-BEA2-425C-BDF7-F29769B711F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SzymiShop.WebApi.Persistence", "SzymiShop.WebApi.Persistence\SzymiShop.WebApi.Persistence.csproj", "{9841241A-F1F2-4AF6-A55C-B9D87541687C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SzymiShop.WebApi.Persistence", "SzymiShop.WebApi.Persistence\SzymiShop.WebApi.Persistence.csproj", "{9841241A-F1F2-4AF6-A55C-B9D87541687C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
