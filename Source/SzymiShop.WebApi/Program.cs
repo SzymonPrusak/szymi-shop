@@ -3,6 +3,8 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using SzymiShop.WebApi.DI;
 using SzymiShop.WebApi.Persistence;
 
@@ -20,7 +22,10 @@ namespace SzymiShop.WebApi
                 {
                     opts.ModelMetadataDetailsProviders.Add(new NewtonsoftJsonValidationMetadataProvider());
                 })
-                .AddNewtonsoftJson();
+                .AddNewtonsoftJson(opts =>
+                {
+                    opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

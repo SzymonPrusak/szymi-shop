@@ -17,20 +17,20 @@ namespace SzymiShop.WebApi.Controller.Auth
 
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest req, CancellationToken token)
+        public async Task<IActionResult> Register([FromBody] RegisterPayload req, CancellationToken token)
         {
             var exUser = await _userService.FindByLogin(req.Login, token);
             if (exUser != null)
                 return Conflict();
 
-            var user = new UserEntity(req.Login, new HashedPassword(req.Password));
+            var user = new User(req.Login, new HashedPassword(req.Password));
             await _userService.Create(user);
 
             return Ok();
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest req, CancellationToken token)
+        public async Task<IActionResult> Login([FromBody] LoginPayload req, CancellationToken token)
         {
             var user = await _userService.FindByLogin(req.Login, token);
             if (user == null)

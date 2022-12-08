@@ -10,6 +10,11 @@ namespace SzymiShop.WebApi.Persistence
 
         }
 
+
         internal DbSet<User.User> Users => Set<User.User>();
+
+        internal DbSet<Image.Image> Images => Set<Image.Image>();
+
+        internal DbSet<Product.Product> Products => Set<Product.Product>();
     }
 }

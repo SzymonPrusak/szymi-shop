@@ -1,6 +1,6 @@
 ﻿namespace SzymiShop.WebApi.Business.Model
 {
-    public abstract class Entity : IEquatable<Entity>
+    public abstract class Entity : IEntity, IEquatable<Entity>
     {
         public Entity()
         {
@@ -10,6 +10,11 @@
         public Entity(Guid id)
         {
             Id = id;
+        }
+
+        public Entity(IEntity ent)
+        {
+            Id = ent.Id;
         }
 
 

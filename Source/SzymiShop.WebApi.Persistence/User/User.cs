@@ -1,14 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SzymiShop.WebApi.Business.Model.User;
 
 namespace SzymiShop.WebApi.Persistence.User
 {
-    internal class User : Entity
+    internal class User : Entity, IUser
     {
-        [Required]
         public required string Login { get; set; }
-        [Required]
         public required string PasswordHash { get; set; }
-        [Required]
         public required string PasswordSalt { get; set; }
+
+        HashedPassword IUser.Password => new HashedPassword(PasswordHash, PasswordSalt);
     }
 }

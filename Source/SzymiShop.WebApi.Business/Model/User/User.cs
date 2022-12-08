@@ -2,7 +2,7 @@
 
 namespace SzymiShop.WebApi.Business.Model.User
 {
-    public class UserEntity : Entity
+    public class User : Entity, IUser
     {
         public const int MinLoginLength = 5;
         public const int MaxLoginLength = 32;
@@ -11,11 +11,25 @@ namespace SzymiShop.WebApi.Business.Model.User
 
         private string _login;
 
-        public UserEntity(string login, HashedPassword password, bool validateLogin = true)
+        public User(string login, HashedPassword password)
+            : this(Guid.NewGuid(), login, password)
         {
+
+        }
+
+        public User(IUser user)
+            : this(user.Id, user.Login, user.Password)
+        {
+
+        }
+
+        private User(Guid id, string login, HashedPassword password)
+            : base(id)
+        {
+            ArgumentNullException.ThrowIfNull(password);
+            ValidateLogin(login);
+
             _login = login;
-            if (validateLogin)
-                ValidateLogin(login);
             Password = password;
         }
 

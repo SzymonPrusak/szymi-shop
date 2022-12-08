@@ -1,8 +1,11 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
+
 namespace SzymiShop.WebApi.Persistence
 {
     internal class Entity
     {
-        public Guid Id { get; set; }
+        [Key]
+        public required Guid Id { get; set; }
     }
 }

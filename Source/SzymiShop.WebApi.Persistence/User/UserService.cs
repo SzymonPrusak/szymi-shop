@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SzymiShop.WebApi.Business.Model.User;
 
 namespace SzymiShop.WebApi.Persistence.User
 {
@@ -13,21 +12,20 @@ namespace SzymiShop.WebApi.Persistence.User
         }
 
 
-        public async Task<UserEntity?> FindByLogin(string login, CancellationToken token = default)
+        public async Task<Business.Model.User.User?> FindByLogin(string login, CancellationToken token = default)
         {
             var ent = await _dbContext.Users
-                .SingleOrDefaultAsync(u => u.Login == login, token);
+                .FirstOrDefaultAsync(u => u.Login == login, token);
             if (ent == null)
                 return null;
 
-            var password = new HashedPassword(ent.PasswordHash, ent.PasswordSalt);
-            return new UserEntity(ent.Login, password, false);
+            return new Business.Model.User.User(ent);
         }
 
-        public async Task Create(UserEntity user)
+        public async Task Create(Business.Model.User.User user)
         {
             var ent = await _dbContext.Users
-                .SingleOrDefaultAsync(u => u.Id == user.Id);
+                .FirstOrDefaultAsync(u => u.Id == user.Id);
             if (ent != null)
                 throw new InvalidOperationException("user already exists");
 
@@ -42,10 +40,10 @@ namespace SzymiShop.WebApi.Persistence.User
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task Update(UserEntity user)
+        public async Task Update(Business.Model.User.User user)
         {
             var ent = await _dbContext.Users
-                .SingleOrDefaultAsync(u => u.Id == user.Id);
+                .FirstOrDefaultAsync(u => u.Id == user.Id);
             if (ent == null)
                 throw new InvalidOperationException("user does not exist");
 

@@ -23,4 +23,8 @@
     <ProjectReference Include="..\SzymiShop.WebApi.Persistence\SzymiShop.WebApi.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controller\Product\" />
+  </ItemGroup>
+
 </Project>
