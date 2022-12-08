@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using SzymiShop.WebApi.Business.Model;
 using SzymiShop.WebApi.Business.Model.Product;
+using SzymiShop.WebApi.Controller.Product.Payload;
 
-namespace SzymiShop.WebApi.Controller.Product
+namespace SzymiShop.WebApi.Controller.Product.Response
 {
-    public class ProductOverviewResponse : ProductResponse
+    public class ProductOverviewResponse : ProductPayload
     {
         public ProductOverviewResponse() { }
         [SetsRequiredMembers]

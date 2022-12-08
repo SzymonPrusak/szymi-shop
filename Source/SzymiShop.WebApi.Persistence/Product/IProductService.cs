@@ -7,5 +7,7 @@ namespace SzymiShop.WebApi.Persistence.Product
         Task<IEnumerable<ProductOverview>> ReadProductOverviews(CancellationToken token = default);
 
         Task<ProductDetails?> FindProductDetails(Guid id, CancellationToken token = default);
+
+        Task CreateUpdate(ProductDetails product);
     }
 }

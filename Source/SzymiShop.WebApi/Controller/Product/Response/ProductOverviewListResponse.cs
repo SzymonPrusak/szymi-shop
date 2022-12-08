@@ -1,4 +1,4 @@
-﻿namespace SzymiShop.WebApi.Controller.Product
+﻿namespace SzymiShop.WebApi.Controller.Product.Response
 {
     public class ProductOverviewListResponse
     {

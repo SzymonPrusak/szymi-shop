@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SzymiShop.WebApi.Business.Model.User;
+using SzymiShop.WebApi.Controller.Auth.Request;
 using SzymiShop.WebApi.Persistence.User;
 
 namespace SzymiShop.WebApi.Controller.Auth
@@ -17,7 +18,7 @@ namespace SzymiShop.WebApi.Controller.Auth
 
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] RegisterPayload req, CancellationToken token)
+        public async Task<IActionResult> Register([FromBody] RegisterRequest req, CancellationToken token)
         {
             var exUser = await _userService.FindByLogin(req.Login, token);
             if (exUser != null)
@@ -30,7 +31,7 @@ namespace SzymiShop.WebApi.Controller.Auth
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody] LoginPayload req, CancellationToken token)
+        public async Task<IActionResult> Login([FromBody] LoginRequest req, CancellationToken token)
         {
             var user = await _userService.FindByLogin(req.Login, token);
             if (user == null)
@@ -39,7 +40,7 @@ namespace SzymiShop.WebApi.Controller.Auth
             if (!user.Password.CheckPassword(req.Password))
                 return Conflict();
 
-            return Ok();
+            return Ok(req);
         }
     }
 }

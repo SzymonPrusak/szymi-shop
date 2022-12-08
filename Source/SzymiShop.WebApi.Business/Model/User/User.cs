@@ -1,4 +1,5 @@
-﻿using SzymiShop.WebApi.Business.Validation;
+﻿using System.Diagnostics.CodeAnalysis;
+using SzymiShop.WebApi.Business.Validation;
 
 namespace SzymiShop.WebApi.Business.Model.User
 {
@@ -11,18 +12,21 @@ namespace SzymiShop.WebApi.Business.Model.User
 
         private string _login;
 
+        [SetsRequiredMembers]
         public User(string login, HashedPassword password)
             : this(Guid.NewGuid(), login, password)
         {
 
         }
 
+        [SetsRequiredMembers]
         public User(IUser user)
             : this(user.Id, user.Login, user.Password)
         {
 
         }
 
+        [SetsRequiredMembers]
         private User(Guid id, string login, HashedPassword password)
             : base(id)
         {

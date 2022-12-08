@@ -1,5 +1,4 @@
-﻿using SzymiShop.WebApi.Business.Model.User;
-
+﻿
 namespace SzymiShop.WebApi.Persistence.User
 {
     public interface IUserService

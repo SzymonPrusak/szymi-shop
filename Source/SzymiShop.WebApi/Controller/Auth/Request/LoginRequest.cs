@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace SzymiShop.WebApi.Controller.Auth
+namespace SzymiShop.WebApi.Controller.Auth.Request
 {
-    public class LoginPayload
+    public class LoginRequest
     {
-        [Required]
         public required string Login { get; set; }
 
         [Required(AllowEmptyStrings = true)]

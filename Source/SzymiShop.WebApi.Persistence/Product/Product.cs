@@ -5,6 +5,7 @@ namespace SzymiShop.WebApi.Persistence.Product
     internal class Product : Entity, IProduct
     {
         public required string Name { get; set; }
+        public Guid SellerId { get; set; }
         public required User.User Seller { get; set; }
         public required int Price { get; set; } 
         public required string Description { get; set; }

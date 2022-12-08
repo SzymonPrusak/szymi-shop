@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SzymiShop.WebApi.Business.Model.Product;
+using SzymiShop.WebApi.Business.Model.User;
+using SzymiShop.WebApi.Controller.Product.Payload;
+using SzymiShop.WebApi.Controller.Product.Response;
 using SzymiShop.WebApi.Persistence.Product;
 
 namespace SzymiShop.WebApi.Controller.Product
@@ -36,7 +41,71 @@ namespace SzymiShop.WebApi.Controller.Product
             if (prod == null)
                 return NotFound();
 
-            var resp = new ProductDetailsResponse(prod);
+            var resp = new ProductDetailsPayload(prod);
+            return Ok(resp);
+        }
+
+        [HttpPost]
+        [HttpPut("{id:guid}")]
+        [Authorize]
+        public async Task<IActionResult> CreateUpdate(Guid? id, [FromBody] ProductDetailsPayload product)
+        {
+            if (product.Images.Count < 1)
+            {
+                ModelState.AddModelError("images", "at least one image needs to be passed");
+                return BadRequest();
+            }
+            foreach (var img in product.Images)
+            {
+                if (!img.Id.HasValue && img.Content == null)
+                {
+                    ModelState.AddModelError("images", "image has either contain id to existing resource, or image contents");
+                    return BadRequest();
+                }
+            }
+
+            if (Request.Method == "PUT")
+            {
+                if (!id.HasValue)
+                    return BadRequest();
+
+                var exEnt = await _productService.FindProductDetails(id.Value);
+                if (exEnt == null)
+                    return NotFound();
+                // TODO: check if owns
+            }
+            else
+            {
+                id = Guid.NewGuid();
+            }
+
+            // TODO: retrieve user
+            var user = (User)null!;
+            var prod = new ProductDetails()
+            {
+                Id = id.Value,
+                Name = product.Name,
+                Seller = user,
+                Price = product.Price,
+                Description = product.Description,
+                Images = product.Images.Select(p =>
+                        new ProductImage
+                        {
+                            Id = p.Content != null ? Guid.NewGuid() : p.Id!.Value,
+                            Content = p.Content,
+                            Order = p.Order
+                        }
+                    )
+                    .ToList()
+            };
+
+            // TODO: prepare icon image from lowest-order image
+
+            await _productService.CreateUpdate(prod);
+
+            var resp = new ProductDetailsPayload(prod);
+            foreach (var img in product.Images)
+                img.Content = null;
             return Ok(resp);
         }
     }

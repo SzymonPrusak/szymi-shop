@@ -1,13 +1,13 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using SzymiShop.WebApi.Business.Model;
 
-namespace SzymiShop.WebApi.Controller.Product
+namespace SzymiShop.WebApi.Controller.Product.Payload
 {
-    public class ProductResponse
+    public class ProductPayload
     {
-        public ProductResponse() { }
+        public ProductPayload() { }
         [SetsRequiredMembers]
-        public ProductResponse(Business.Model.Product.Product product)
+        public ProductPayload(Business.Model.Product.Product product)
         {
             Id = product.Id;
             Name = product.Name;
@@ -16,7 +16,7 @@ namespace SzymiShop.WebApi.Controller.Product
             Price = product.Price;
         }
 
-        public required Guid Id { get; set; }
+        public required Guid? Id { get; set; }
         public required string Name { get; set; }
         public required Guid SellerId { get; set; }
         public required string SellerName { get; set; }
