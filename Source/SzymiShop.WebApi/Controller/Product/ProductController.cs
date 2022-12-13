@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SzymiShop.WebApi.Business.Model.Product;
 using SzymiShop.WebApi.Business.Model.User;
@@ -47,7 +48,7 @@ namespace SzymiShop.WebApi.Controller.Product
 
         [HttpPost]
         [HttpPut("{id:guid}")]
-        [Authorize]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> CreateUpdate(Guid? id, [FromBody] ProductDetailsPayload product)
         {
             if (product.Images.Count < 1)

@@ -1,7 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using SzymiShop.WebApi.Business.Model.User;
+using SzymiShop.WebApi.Controller.Auth.Payload;
 using SzymiShop.WebApi.Controller.Auth.Request;
+using SzymiShop.WebApi.Controller.Auth.Response;
 using SzymiShop.WebApi.Persistence.User;
+using SzymiShop.WebApi.Util.Auth;
 
 namespace SzymiShop.WebApi.Controller.Auth
 {
@@ -10,10 +17,12 @@ namespace SzymiShop.WebApi.Controller.Auth
     public class AuthController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IOptionsMonitor<JwtConfig> _jwtConfig;
 
-        public AuthController(IUserService userService)
+        public AuthController(IUserService userService, IOptionsMonitor<JwtConfig> jwtConfig)
         {
             _userService = userService;
+            _jwtConfig = jwtConfig;
         }
 
 
@@ -27,7 +36,7 @@ namespace SzymiShop.WebApi.Controller.Auth
             var user = new User(req.Login, new HashedPassword(req.Password));
             await _userService.Create(user);
 
-            return Ok();
+            return Ok(GenerateTokens(user));
         }
 
         [HttpPost("Login")]
@@ -40,7 +49,42 @@ namespace SzymiShop.WebApi.Controller.Auth
             if (!user.Password.CheckPassword(req.Password))
                 return Conflict();
 
-            return Ok(req);
+            return Ok(GenerateTokens(user));
+        }
+
+
+        private AuthResponse GenerateTokens(User user)
+        {
+            return new AuthResponse
+            {
+                AccessToken = GenerateAccessToken(user),
+                RefreshToken = null!
+            };
+        }
+
+        private string GenerateAccessToken(User user)
+        {
+            var handler = new JwtSecurityTokenHandler();
+
+            var tokenDesc = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim("Id", user.Id.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddMinutes(10),
+                SigningCredentials = _jwtConfig.CurrentValue.SigningCredentials
+            };
+
+            var token = handler.CreateToken(tokenDesc);
+            var tokenString = handler.WriteToken(token);
+
+            return tokenString;
+        }
+
+        private RefreshTokenPayload GenerateRefreshToken(User user)
+        {
+            return null!;
         }
     }
 }

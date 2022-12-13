@@ -9,20 +9,18 @@ namespace SzymiShop.WebApi.Business.Model
             Id = Guid.NewGuid();
         }
 
-        [SetsRequiredMembers]
         public Entity(Guid id)
         {
             Id = id;
         }
 
-        [SetsRequiredMembers]
         public Entity(IEntity ent)
         {
             Id = ent.Id;
         }
 
 
-        public required Guid Id { get; set; }
+        public Guid Id { get; set; }
 
 
         public bool Equals(Entity? other) => other?.Id.Equals(Id) ?? false;

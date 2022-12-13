@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SzymiShop.WebApi.Business.Model.User;
 
 namespace SzymiShop.WebApi.Persistence.User
 {
@@ -50,6 +51,34 @@ namespace SzymiShop.WebApi.Persistence.User
             ent.Login = user.Login;
             ent.PasswordHash = user.Password.PasswordHashB64;
             ent.PasswordSalt = user.Password.Salt;
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<RefreshToken?> FindRefreshToken(Guid id, CancellationToken token = default)
+        {
+            var ent = await _dbContext.RefreshTokens
+                .FirstOrDefaultAsync(e => e.Id == id, token);
+            return ent;
+        }
+
+        public Task CreateToken(RefreshToken token)
+        {
+            _dbContext.RefreshTokens.Add(token);
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task DeleteToken(RefreshToken token)
+        {
+            _dbContext.RefreshTokens.Remove(token);
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteAllTokens(Business.Model.User.User user)
+        {
+            var tokens = await _dbContext.RefreshTokens
+                .Where(t => t.UserId == user.Id)
+                .ToListAsync();
+            _dbContext.RefreshTokens.RemoveRange(tokens);
             await _dbContext.SaveChangesAsync();
         }
     }
