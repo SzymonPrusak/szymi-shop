@@ -15,10 +15,20 @@ namespace SzymiShop.WebApi.Util.Auth
                 _secret = value;
                 Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(value));
                 SigningCredentials = new SigningCredentials(Key, SecurityAlgorithms.HmacSha512Signature);
+                ValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = Key,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    RequireExpirationTime = false,
+                    ValidateLifetime = true
+                };
             }
         }
 
         public SymmetricSecurityKey Key { get; private set; } = null!;
         public SigningCredentials SigningCredentials { get; private set; } = null!;
+        public TokenValidationParameters ValidationParameters { get; private set; } = null!;
     }
 }

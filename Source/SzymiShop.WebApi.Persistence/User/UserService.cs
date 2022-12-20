@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SzymiShop.WebApi.Business.Model.User;
 
 namespace SzymiShop.WebApi.Persistence.User
 {
-    internal class UserService : IUserService
+    public class UserService : IUserService
     {
         private readonly ShopDbContext _dbContext;
 

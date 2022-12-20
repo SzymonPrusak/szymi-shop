@@ -65,6 +65,8 @@ namespace SzymiShop.WebApi.Controller.Product
                 }
             }
 
+            // TODO: validate if contains at least one correct image
+
             if (Request.Method == "PUT")
             {
                 if (!id.HasValue)
