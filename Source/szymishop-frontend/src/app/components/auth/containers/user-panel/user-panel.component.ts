@@ -13,6 +13,7 @@ import * as Actions from '../../actions/auth.actions';
 export class UserPanelComponent {
 
   protected isLoggedIn$ = this.store.select(State.selectIsLoggedIn);
+  protected user$ = this.store.select(State.selectUser);
 
   constructor(
     private store: Store<State.State>
@@ -20,11 +21,11 @@ export class UserPanelComponent {
 
 
   protected logIn(): void {
-    this.store.dispatch(Actions.logIn());
+    this.store.dispatch(Actions.logIn({ login: 'aaaaa', password: 'aaaaaaaa' }))
   }
 
   protected register(): void {
-    
+
   }
 
   protected logOut(): void {

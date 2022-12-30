@@ -26,6 +26,14 @@ namespace SzymiShop.WebApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddCors(opts =>
+                opts.AddDefaultPolicy(bldr =>
+                    bldr.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                    )
+                );
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -35,9 +43,11 @@ namespace SzymiShop.WebApi
                 app.UseSwaggerUI();
             }
 
-            app.UseAuthentication();
-
             app.UseHttpsRedirection();
+
+            app.UseCors();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

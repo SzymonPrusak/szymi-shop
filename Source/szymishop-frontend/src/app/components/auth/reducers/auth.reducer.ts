@@ -14,6 +14,6 @@ const initialState: State = {
 
 
 export const reducer = createReducer(initialState,
-    on(Actions.logIn, (s) => ({ ...s, user: { id: '', login: '' } })),
+    on(Actions.logInSuccess, (s, a) => ({ ...s, user: a.user })),
     on(Actions.logOut, (s) => ({ ...s, user: null }))
 );

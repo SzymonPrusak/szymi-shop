@@ -35,7 +35,7 @@ namespace SzymiShop.WebApi.Controller.Auth
             var user = new User(req.Login, new HashedPassword(req.Password));
             await _userService.Create(user);
 
-            return Ok(await GenerateTokens(user.Id));
+            return Ok(await GenerateAuthResponse(user));
         }
 
         [HttpPost("Login")]
@@ -48,7 +48,7 @@ namespace SzymiShop.WebApi.Controller.Auth
             if (!user.Password.CheckPassword(req.Password))
                 return Conflict();
 
-            return Ok(await GenerateTokens(user.Id));
+            return Ok(await GenerateAuthResponse(user));
         }
 
         [HttpPost("Refresh")]
@@ -76,9 +76,22 @@ namespace SzymiShop.WebApi.Controller.Auth
         }
 
 
-        private async Task<AuthResponse> GenerateTokens(Guid userId)
+        private async Task<AuthResponse> GenerateAuthResponse(User user)
         {
             return new AuthResponse
+            {
+                User = new UserPayload
+                {
+                    Id = user.Id,
+                    Login = user.Login
+                },
+                AuthTokens = await GenerateTokens(user.Id)
+            };
+        }
+
+        private async Task<AuthTokensPayload> GenerateTokens(Guid userId)
+        {
+            return new AuthTokensPayload
             {
                 AccessToken = _accessTokenService.Generate(userId),
                 RefreshToken = await GenerateRefreshToken(userId)

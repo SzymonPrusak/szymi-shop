@@ -5,6 +5,8 @@ import { StoreModule } from '@ngrx/store';
 import { UserPanelComponent } from './containers/user-panel/user-panel.component';
 import { authReducers, featureKey } from './reducers';
 import { SharedModule } from '../../shared/shared.module';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthEffects } from './effects/auth.effects';
 
 
 
@@ -18,7 +20,8 @@ import { SharedModule } from '../../shared/shared.module';
   imports: [
     CommonModule,
     SharedModule,
-    StoreModule.forFeature(featureKey, authReducers)
+    StoreModule.forFeature(featureKey, authReducers),
+    EffectsModule.forFeature([ AuthEffects ])
   ]
 })
 export class AuthModule { }
