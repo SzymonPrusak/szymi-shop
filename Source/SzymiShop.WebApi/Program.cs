@@ -1,5 +1,3 @@
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using SzymiShop.WebApi.DI;
 using SzymiShop.WebApi.Util.Startup;
 
@@ -19,7 +17,10 @@ namespace SzymiShop.WebApi
 
             builder.Services.AddJwtBearerAuthentication(builder.Configuration);
 
-            SetupInjection(builder);
+            builder.Host.SetupAutofacInjection(
+                new PersistenceServiceBindings(),
+                new ApiServiceBindings()
+            );
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -43,17 +44,6 @@ namespace SzymiShop.WebApi
             app.MapControllers();
 
             app.Run();
-        }
-
-
-        private static void SetupInjection(WebApplicationBuilder builder)
-        {
-            builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
-                .ConfigureContainer<ContainerBuilder>((bldr) =>
-                {
-                    bldr.RegisterModule(new PersistenceServiceBindings());
-                    bldr.RegisterModule(new ApiServiceBindings());
-                });
         }
     }
 }
