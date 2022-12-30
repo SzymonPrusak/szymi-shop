@@ -1,0 +1,9 @@
+<div *ngIf="isLoggedIn$ | async; else notLoggedIn">
+    logged in
+    <button mat-button (click)="logOut()" color="accent">Log Out</button>
+</div>
+
+<ng-template #notLoggedIn>
+    <button mat-button (click)="logIn()" color="primary">Log In</button>
+    <button mat-button (click)="register()" color="accent">Register</button>
+</ng-template>
