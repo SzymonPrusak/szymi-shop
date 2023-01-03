@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, Subject, throwError } from 'rxjs';
 
 import { User } from '../model/user.model';
-import { AuthTokens } from '../model/auth.model';
+import { AuthTokens, RefreshToken } from '../model/auth.model';
 import { handleError } from '../../../utils/service-utils';
 
 
@@ -16,6 +16,9 @@ export interface LoginResponse {
     providedIn: 'root'
 })
 export class AuthService {
+
+    private _tokenRefreshFailure$ = new Subject();
+
     constructor(
         private http: HttpClient
     ) {}
@@ -49,5 +52,9 @@ export class AuthService {
                 return null;
             }))
         )
+    }
+
+    public refresh(payload: AuthTokens): Observable<AuthTokens> {
+        return this.http.post<AuthTokens>('/Auth/Refresh', payload);
     }
 }

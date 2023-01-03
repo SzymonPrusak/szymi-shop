@@ -26,6 +26,7 @@ namespace SzymiShop.WebApi.Controller.Auth
 
 
         [HttpPost("Register")]
+        [ProducesResponseType(typeof(AuthResponse), 200)]
         public async Task<IActionResult> Register([FromBody] RegisterRequest req, CancellationToken token)
         {
             var exUser = await _userService.FindByLogin(req.Login, token);
@@ -39,6 +40,7 @@ namespace SzymiShop.WebApi.Controller.Auth
         }
 
         [HttpPost("Login")]
+        [ProducesResponseType(typeof(AuthResponse), 200)]
         public async Task<IActionResult> Login([FromBody] LoginRequest req, CancellationToken token)
         {
             var user = await _userService.FindByLogin(req.Login, token);
@@ -52,22 +54,19 @@ namespace SzymiShop.WebApi.Controller.Auth
         }
 
         [HttpPost("Refresh")]
-        public async Task<IActionResult> Refresh([FromBody] RefreshTokenPayload refreshToken, CancellationToken token)
+        [ProducesResponseType(typeof(AuthTokensPayload), 200)]
+        public async Task<IActionResult> Refresh([FromBody] AuthTokensPayload tokens, CancellationToken token)
         {
-            string? accessToken = Request.Headers.Authorization.FirstOrDefault();
-            if (accessToken?.StartsWith("bearer ", StringComparison.InvariantCultureIgnoreCase) ?? false)
-                accessToken = accessToken.Substring(7);
-
-            var userIdN = _accessTokenService.Validate(accessToken);
+            var userIdN = _accessTokenService.Validate(tokens.AccessToken);
             if (!userIdN.HasValue)
                 return Unauthorized();
             var userId = userIdN.Value;
 
-            var tokenEnt = await _refreshTokenService.Find(refreshToken.Id, token);
+            var tokenEnt = await _refreshTokenService.Find(tokens.RefreshToken.Id, token);
 
             if (tokenEnt == null || tokenEnt.UserId != userId)
                 return Conflict();
-            if (!_refreshTokenService.Verify(tokenEnt, refreshToken.Signature))
+            if (!_refreshTokenService.Verify(tokenEnt, tokens.RefreshToken.Signature))
                 return Conflict();
 
             await _refreshTokenService.Delete(tokenEnt);

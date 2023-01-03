@@ -48,7 +48,7 @@ namespace SzymiShop.WebApi.Controller.Product
 
         [HttpPost]
         [HttpPut("{id:guid}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize]
         public async Task<IActionResult> CreateUpdate(Guid? id, [FromBody] ProductDetailsPayload product)
         {
             if (product.Images.Count < 1)

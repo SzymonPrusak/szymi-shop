@@ -4,7 +4,7 @@ import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 
 import { AuthService } from '../services/auth.service';
 import * as AuthActions from '../actions/auth.actions';
-import { accessTokenKey, refreshTokenKey } from '../../../interceptors/auth-interceptor';
+import { AuthTokenService } from '../services/auth-token.service';
 
 
 @Injectable()
@@ -19,10 +19,7 @@ export class AuthEffects {
 
     readonly logInSuccess$ = createEffect(() => this.actions$.pipe(
         ofType(AuthActions.logInSuccess),
-        tap((a) => {
-            localStorage.setItem(accessTokenKey, a.authTokens.accessToken);
-            localStorage.setItem(refreshTokenKey, JSON.stringify(a.authTokens.refreshToken));
-        })
+        tap((a) => this.authTokenService.setTokens(a.authTokens))
     ), { dispatch: false });
 
     readonly register$ = createEffect(() => this.actions$.pipe(
@@ -35,15 +32,13 @@ export class AuthEffects {
 
     readonly logOut$ = createEffect(() => this.actions$.pipe(
         ofType(AuthActions.logOut),
-        tap(() => {
-            localStorage.removeItem(accessTokenKey);
-            localStorage.removeItem(refreshTokenKey);
-        })
+        tap(() => this.authTokenService.setTokens(null))
     ), { dispatch: false });
 
 
     constructor(
         private actions$: Actions,
-        private authService: AuthService 
+        private authService: AuthService,
+        private authTokenService: AuthTokenService
     ) {}
 };

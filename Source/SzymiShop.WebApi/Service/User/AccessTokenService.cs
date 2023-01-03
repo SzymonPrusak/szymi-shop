@@ -47,7 +47,7 @@ namespace SzymiShop.WebApi.Service.User
             ClaimsPrincipal cp;
             try
             {
-                cp = handler.ValidateToken(token, _jwtConfig.CurrentValue.ValidationParameters, out _);
+                cp = handler.ValidateToken(token, _jwtConfig.CurrentValue.ValidationParametersNoLifetime, out _);
             }
             catch (SecurityTokenException)
             {

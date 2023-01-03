@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ComponentsModule } from './components/components.module';
 import { ApiInterceptor } from './interceptors/api-interceptor';
+import { AuthInterceptor } from './interceptors/auth-interceptor';
 
 
 
@@ -26,6 +27,11 @@ import { ApiInterceptor } from './interceptors/api-interceptor';
     HttpClientModule
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ApiInterceptor,

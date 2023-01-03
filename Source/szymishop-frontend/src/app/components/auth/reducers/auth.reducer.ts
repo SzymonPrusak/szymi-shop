@@ -19,6 +19,7 @@ const initialState: State = {
     registerError: null
 };
 
+// TODO: rehydrate login state from localStorage
 
 export const reducer = createReducer(initialState,
     on(Actions.logIn, Actions.register, (s) => ({ ...s, loginStatus: LoginStatus.LoggingIn })),
