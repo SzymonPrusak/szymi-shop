@@ -7,6 +7,7 @@ import * as State from '../../reducers/index';
 import * as Actions from '../../actions/auth.actions';
 import { LoginModel } from '../../components/login/models/login.model';
 import { LoginStatus } from '../../model/auth.model';
+import { RegisterModel } from '../../components/register/models/register.model';
 
 
 @Component({
@@ -19,11 +20,13 @@ export class UserPanelComponent implements OnDestroy {
   protected LoginStatus = LoginStatus;
 
   @ViewChild('loginPanel') protected loginPanel!: TemplateRef<any>;
+  @ViewChild('registerPanel') protected registerPanel!: TemplateRef<any>;
 
   protected isLoggedIn$ = this.store.select(State.selectIsLoggedIn);
   protected user$ = this.store.select(State.selectUser);
   protected loginStatus$ = this.store.select(State.selectLoginStatus);
   protected loginError$ = this.store.select(State.selectLoginError);
+  protected registerError$ = this.store.select(State.selectRegisterError);
 
   private sub = new Subscription();
   private dialogRef: any;
@@ -51,14 +54,18 @@ export class UserPanelComponent implements OnDestroy {
   }
 
   protected onRegister(): void {
-
+    this.dialogRef = this.dialog.open(this.registerPanel, { width: '400px', height: '280px' });
   }
 
   protected logOut(): void {
     this.store.dispatch(Actions.logOut());
   }
 
-  protected onSubmit(model: LoginModel): void {
+  protected onLoggingIn(model: LoginModel): void {
     this.store.dispatch(Actions.logIn(model));
+  }
+
+  protected onRegistering(model: RegisterModel): void {
+    this.store.dispatch(Actions.register(model));
   }
 }

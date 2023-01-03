@@ -25,13 +25,21 @@ export class AuthEffects {
         })
     ), { dispatch: false });
 
+    readonly register$ = createEffect(() => this.actions$.pipe(
+        ofType(AuthActions.register),
+        exhaustMap(({ login, password}) => this.authService.register(login, password).pipe(
+            map(({ user, authTokens}) => AuthActions.logInSuccess({ user, authTokens })),
+            catchError(err => of(AuthActions.registerError({ message: err })))
+        ))
+    ));
+
     readonly logOut$ = createEffect(() => this.actions$.pipe(
         ofType(AuthActions.logOut),
         tap(() => {
             localStorage.removeItem(accessTokenKey);
             localStorage.removeItem(refreshTokenKey);
         })
-    ), { dispatch: false })
+    ), { dispatch: false });
 
 
     constructor(

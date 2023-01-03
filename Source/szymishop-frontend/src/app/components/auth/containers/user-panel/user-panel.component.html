@@ -12,6 +12,14 @@
     <app-login
         [error]="loginError$ | async"
         [loggingIn]="(loginStatus$ | async) === LoginStatus.LoggingIn"
-        (submit)="onSubmit($event)"
+        (submit)="onLoggingIn($event)"
     ></app-login>
+</ng-template>
+
+<ng-template #registerPanel>
+    <app-register
+        [error]="registerError$ | async"
+        [loggingIn]="(loginStatus$ | async) === LoginStatus.LoggingIn"
+        (submit)="onRegistering($event)"
+    ></app-register>
 </ng-template>

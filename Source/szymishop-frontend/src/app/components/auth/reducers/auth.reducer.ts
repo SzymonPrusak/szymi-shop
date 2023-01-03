@@ -9,17 +9,19 @@ export interface State {
     user: User | null;
     loginStatus: LoginStatus;
     loginError: string | null;
+    registerError: string | null;
 }
 
 const initialState: State = {
     user: null,
     loginStatus: LoginStatus.LoggedOut,
-    loginError: null
+    loginError: null,
+    registerError: null
 };
 
 
 export const reducer = createReducer(initialState,
-    on(Actions.logIn, (s) => ({ ...s, loginStatus: LoginStatus.LoggingIn })),
+    on(Actions.logIn, Actions.register, (s) => ({ ...s, loginStatus: LoginStatus.LoggingIn })),
     on(Actions.logInSuccess, (s, a) => ({
         ...s,
         user: a.user,
@@ -30,6 +32,11 @@ export const reducer = createReducer(initialState,
         ...s,
         loginStatus: LoginStatus.LoggedOut,
         loginError: message
+    })),
+    on(Actions.registerError, (s, { message }) => ({
+        ...s,
+        loginStatus: LoginStatus.LoggedOut,
+        registerError: message
     })),
     on(Actions.logOut, (s) => ({
         ...s,

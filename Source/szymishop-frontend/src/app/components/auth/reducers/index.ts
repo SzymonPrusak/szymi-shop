@@ -39,3 +39,8 @@ export const selectLoginError = createSelector(
     selectAuthState,
     s => s.loginError
 );
+
+export const selectRegisterError = createSelector(
+    selectAuthState,
+    s => s.registerError
+);

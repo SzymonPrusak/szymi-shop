@@ -35,4 +35,19 @@ export class AuthService {
             }))
         );
     }
+
+    public register(login: string, password: string): Observable<LoginResponse> {
+        const body = {
+            login,
+            password
+        };
+        return this.http.post<LoginResponse>('/Auth/Register', body).pipe(
+            catchError(handleError(e => {
+                if (e.status === 409) {
+                    return throwError(() => 'Login already in use')
+                }
+                return null;
+            }))
+        )
+    }
 }

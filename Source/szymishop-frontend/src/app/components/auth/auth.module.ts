@@ -8,13 +8,15 @@ import { SharedModule } from '../../shared/shared.module';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './effects/auth.effects';
 import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 
 
 
 @NgModule({
   declarations: [
     UserPanelComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   exports: [
     UserPanelComponent

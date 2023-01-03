@@ -6,20 +6,16 @@ import { User } from '../model/user.model';
 
 export enum AuthActions {
     LogIn = 'app/auth/log-in',
-    Register = 'app/auth/register',
     LogInSuccess = 'app/auth/log-in-success',
     LogInError = 'app/auth/log-in-error',
+    Register = 'app/auth/register',
+    RegisterError = 'app/auth/register-error',
     LogOut = 'app/auth/log-out'
 };
 
 
 export const logIn = createAction(
     AuthActions.LogIn,
-    props<{ login: string, password: string }>()
-);
-
-export const register = createAction(
-    AuthActions.Register,
     props<{ login: string, password: string }>()
 );
 
@@ -33,6 +29,16 @@ export const logInError = createAction(
     props<{ message: string }>()
 );
 
+export const register = createAction(
+    AuthActions.Register,
+    props<{ login: string, password: string }>()
+);
+
+export const registerError = createAction(
+    AuthActions.RegisterError,
+    props<{ message: string }>()
+);
+
 export const logOut = createAction(
     AuthActions.LogOut
 );
@@ -40,9 +46,10 @@ export const logOut = createAction(
 
 const all = union({
     logIn,
-    register,
     logInSuccess,
     logInError,
+    register,
+    registerError,
     logOut
 });
 export type AuthActionTypes = typeof all;
