@@ -7,12 +7,14 @@ import { authReducers, featureKey } from './reducers';
 import { SharedModule } from '../../shared/shared.module';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './effects/auth.effects';
+import { LoginComponent } from './components/login/login.component';
 
 
 
 @NgModule({
   declarations: [
-    UserPanelComponent
+    UserPanelComponent,
+    LoginComponent
   ],
   exports: [
     UserPanelComponent

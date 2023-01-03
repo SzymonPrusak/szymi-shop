@@ -8,3 +8,9 @@ export interface AuthTokens {
     accessToken: string,
     refreshToken: RefreshToken
 };
+
+export enum LoginStatus {
+    LoggedOut,
+    LoggingIn,
+    LoggedIn
+}

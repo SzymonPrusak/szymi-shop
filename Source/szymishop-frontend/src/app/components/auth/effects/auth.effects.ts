@@ -20,23 +20,14 @@ export class AuthEffects {
     readonly logInSuccess$ = createEffect(() => this.actions$.pipe(
         ofType(AuthActions.logInSuccess),
         tap((a) => {
-            alert('logged in');
             localStorage.setItem(accessTokenKey, a.authTokens.accessToken);
             localStorage.setItem(refreshTokenKey, JSON.stringify(a.authTokens.refreshToken));
-        })
-    ), { dispatch: false });
-
-    readonly logInError$ = createEffect(() => this.actions$.pipe(
-        ofType(AuthActions.logInError),
-        tap(({ message }) => {
-            alert(message);
         })
     ), { dispatch: false });
 
     readonly logOut$ = createEffect(() => this.actions$.pipe(
         ofType(AuthActions.logOut),
         tap(() => {
-            alert('logged out');
             localStorage.removeItem(accessTokenKey);
             localStorage.removeItem(refreshTokenKey);
         })

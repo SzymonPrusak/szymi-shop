@@ -4,6 +4,14 @@
 </div>
 
 <ng-template #notLoggedIn>
-    <button mat-button (click)="logIn()" color="primary">Log In</button>
-    <button mat-button (click)="register()" color="accent">Register</button>
+    <button mat-button (click)="onLogIn()" color="primary">Log In</button>
+    <button mat-button (click)="onRegister()" color="accent">Register</button>
+</ng-template>
+
+<ng-template #loginPanel>
+    <app-login
+        [error]="loginError$ | async"
+        [loggingIn]="(loginStatus$ | async) === LoginStatus.LoggingIn"
+        (submit)="onSubmit($event)"
+    ></app-login>
 </ng-template>
