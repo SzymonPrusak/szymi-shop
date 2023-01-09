@@ -29,7 +29,7 @@ export class UserPanelComponent implements OnDestroy {
   protected registerError$ = this.store.select(State.selectRegisterError);
 
   private sub = new Subscription();
-  private dialogRef: any;
+  private dialogRef?: any;
 
   constructor(
     private store: Store<State.State>,
@@ -38,7 +38,7 @@ export class UserPanelComponent implements OnDestroy {
     this.sub.add(
       this.loginStatus$.subscribe(s => {
         if (s === LoginStatus.LoggedIn) {
-          this.dialogRef.close();
+          this.dialogRef?.close();
         }
       })
     );

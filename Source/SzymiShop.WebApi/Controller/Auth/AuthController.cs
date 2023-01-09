@@ -26,7 +26,8 @@ namespace SzymiShop.WebApi.Controller.Auth
 
 
         [HttpPost("Register")]
-        [ProducesResponseType(typeof(AuthResponse), 200)]
+        [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> Register([FromBody] RegisterRequest req, CancellationToken token)
         {
             var exUser = await _userService.FindByLogin(req.Login, token);
@@ -40,7 +41,8 @@ namespace SzymiShop.WebApi.Controller.Auth
         }
 
         [HttpPost("Login")]
-        [ProducesResponseType(typeof(AuthResponse), 200)]
+        [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> Login([FromBody] LoginRequest req, CancellationToken token)
         {
             var user = await _userService.FindByLogin(req.Login, token);
@@ -54,7 +56,9 @@ namespace SzymiShop.WebApi.Controller.Auth
         }
 
         [HttpPost("Refresh")]
-        [ProducesResponseType(typeof(AuthTokensPayload), 200)]
+        [ProducesResponseType(typeof(AuthTokensPayload), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> Refresh([FromBody] AuthTokensPayload tokens, CancellationToken token)
         {
             var userIdN = _accessTokenService.Validate(tokens.AccessToken);

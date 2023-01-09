@@ -10,4 +10,8 @@ export class NavbarComponent {
   protected onHomeClick(): void {
     
   }
+
+  protected onMyShopClick(): void {
+    
+  }
 }

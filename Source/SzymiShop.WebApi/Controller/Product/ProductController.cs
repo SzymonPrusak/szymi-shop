@@ -22,9 +22,14 @@ namespace SzymiShop.WebApi.Controller.Product
 
 
         [HttpGet]
-        public async Task<IActionResult> ListOverviews(CancellationToken token = default)
+        [ProducesResponseType(typeof(ProductOverviewListResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ListOverviews(Guid? userId = null, CancellationToken token = default)
         {
-            var products = await _productService.ReadProductOverviews(token);
+            IEnumerable<ProductOverview> products;
+            if (userId.HasValue)
+                products = await _productService.FindProductOverviewsByUser(userId.Value);
+            else
+                products = await _productService.ReadProductOverviews(token);
 
             var resp = new ProductOverviewListResponse
             {
@@ -36,19 +41,24 @@ namespace SzymiShop.WebApi.Controller.Product
         }
 
         [HttpGet("Details/{id:guid}")]
+        [ProducesResponseType(typeof(ProductDetailsResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetDetails(Guid id, CancellationToken token = default)
         {
             var prod = await _productService.FindProductDetails(id, token);
             if (prod == null)
                 return NotFound();
 
-            var resp = new ProductDetailsPayload(prod);
+            var resp = new ProductDetailsResponse(prod);
             return Ok(resp);
         }
 
         [HttpPost]
         [HttpPut("{id:guid}")]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> CreateUpdate(Guid? id, [FromBody] ProductDetailsPayload product)
         {
             if (product.Images.Count < 1)

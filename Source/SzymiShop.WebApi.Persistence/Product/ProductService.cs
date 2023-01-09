@@ -20,7 +20,22 @@ namespace SzymiShop.WebApi.Persistence.Product
                 .Include(p => p.Images.Where(i => i.Order == -1))
                 .Include(p => p.Seller)
                 .ToListAsync(token);
+            return CreateOverviewModel(products);
+        }
 
+        public async Task<IEnumerable<ProductOverview>> FindProductOverviewsByUser(Guid userId, CancellationToken token = default)
+        {
+            var products = await _dbContext.Products
+                .IgnoreAutoIncludes()
+                .Include(p => p.Images.Where(i => i.Order == -1))
+                .Include(p => p.Seller)
+                .Where(p => p.SellerId == userId)
+                .ToListAsync(token);
+            return CreateOverviewModel(products);
+        }
+
+        private IEnumerable<ProductOverview> CreateOverviewModel(IEnumerable<Product> products)
+        {
             var res = new List<ProductOverview>();
             foreach (var product in products)
             {

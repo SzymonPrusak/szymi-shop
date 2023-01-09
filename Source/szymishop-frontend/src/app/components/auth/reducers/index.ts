@@ -1,4 +1,5 @@
 import { ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
+import { createRehydrationSyncReducer } from '../../../utils/rehydration-utils';
 
 import * as Auth from './auth.reducer';
 
@@ -12,6 +13,14 @@ export interface State {
 export const authReducers: ActionReducerMap<State> = {
     auth: Auth.reducer
 }
+
+export const authMetaReducers = [
+    createRehydrationSyncReducer([
+            { auth: Auth.rehydratedProps }
+        ],
+        featureKey
+    )
+]
 
 
 const selectState = createFeatureSelector<State>(featureKey);

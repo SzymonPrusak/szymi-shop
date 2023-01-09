@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using SzymiShop.WebApi.Business.Model.Product;
 
 namespace SzymiShop.WebApi.Controller.Product.Payload
@@ -17,6 +18,7 @@ namespace SzymiShop.WebApi.Controller.Product.Payload
         }
 
 
+        [Required]
         public required string Description { get; set; }
         public required IList<ProductImagePayload> Images { get; set; }
     }
